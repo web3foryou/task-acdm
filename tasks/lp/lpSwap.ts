@@ -29,11 +29,9 @@ task("lpSwap", "lpSwap")
         let allowance = await xxxSigner.allowance(signer.address, addresses.LP);
         console.log("Allowance: " + allowance);
 
-        // console.log(dataApprove);
+        let tx = await lpSigner.swapExactTokensForETH(amountIn, amountOutMin, path, address, deadline);
+        await tx.wait();
 
-        let data = await lpSigner.swapExactTokensForETH(amountIn, amountOutMin, path, address, deadline);
-
-        console.log("data: " + data);
         console.log("Done");
     });
 
