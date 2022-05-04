@@ -1,0 +1,26 @@
+export class Address {
+    PLATFORM: string;
+    DAO: string;
+    STAKING: string;
+    ACDM: string;
+    LP: string;
+    XXX: string;
+
+    constructor(network: string) {
+        this.PLATFORM = process.env.CONTRACT_PLATFORM as string;
+        this.DAO = process.env.CONTRACT_DAO as string;
+        this.STAKING = process.env.CONTRACT_STAKING as string;
+        this.ACDM = process.env.CONTRACT_ACDM as string;
+        this.LP = process.env.CONTRACT_LP as string;
+        this.XXX = process.env.CONTRACT_XXX as string;
+
+        if (network == "rinkeby") {
+            this.PLATFORM = process.env.CONTRACT_PLATFORM_RINKEBY as string;
+            this.DAO = process.env.CONTRACT_DAO_RINKEBY as string;
+            this.STAKING = process.env.CONTRACT_STAKING_RINKEBY as string;
+            this.ACDM = process.env.CONTRACT_ACDM_RINKEBY as string;
+            this.LP = process.env.CONTRACT_LP_RINKEBY as string;
+            this.XXX = process.env.CONTRACT_XXX_RINKEBY as string;
+        }
+    }
+}
