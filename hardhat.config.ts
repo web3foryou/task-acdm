@@ -12,14 +12,23 @@ require("./tasks/index.ts");
 dotenv.config();
 
 const NETWORK = process.env.NETWORK as string;
+console.log("NETWORK: " + NETWORK)
+
 const INFURA_KEY_RINKEBY = process.env.INFURA_KEY_RINKEBY as string;
 const INFURA_KEY_ROPSTEN = process.env.INFURA_KEY_ROPSTEN as string;
 const ALCHE_KEY_RINKEBY = process.env.ALCHE_KEY_RINKEBY as string;
 const ALCHE_KEY_ROPSTEN = process.env.ALCHE_KEY_ROPSTEN as string;
+
 const PK_1 = process.env.PK_1 as string;
 const PK_2 = process.env.PK_2 as string;
-const PKG_1 = process.env.PKG_1 as string;
-const PKG_2 = process.env.PKG_2 as string;
+
+let PKG_1_1 = process.env.PKG_1_1 as string;
+let PKG_1_2 = process.env.PKG_1_2 as string;
+let PKG_1_3 = process.env.PKG_1_3 as string;
+
+let PKG_2_1 = process.env.PKG_2_1 as string;
+let PKG_2_2 = process.env.PKG_2_2 as string;
+let PKG_2_3 = process.env.PKG_2_3 as string;
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -47,7 +56,11 @@ const config: HardhatUserConfig = {
         hardhat: {},
         ganache: {
             url: "http://127.0.0.1:8545",
-            accounts: [PKG_1, PKG_2]
+            accounts: [PKG_1_1, PKG_1_2, PKG_1_3]
+        },
+        ganache2: {
+            url: "http://127.0.0.1:8545",
+            accounts: [PKG_2_1, PKG_2_2, PKG_2_3]
         },
         rinkeby: {
             // url: "https://eth-rinkeby.alchemyapi.io/v2/" + ALCHE_KEY_RINKEBY,

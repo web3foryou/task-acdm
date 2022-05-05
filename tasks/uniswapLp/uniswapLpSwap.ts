@@ -20,7 +20,10 @@ task("uniswapLpSwap", "uniswapLpSwap")
         let amountOutMin = hre.ethers.utils.parseEther("0.001");
         // let amountOutMin = 18 042 007 838 410 927;
         let path = ["0x89b254f400e49509C4a28f31C054548Dac545136", "0xc778417E063141139Fce010982780140Aa0cD5Ab"];
-        let deadline = 1651767093;
+        let deadline = 1751767093;
+        // let deadline = Number.MAX_SAFE_INTEGER;
+
+            console.log(deadline)
 
         let txApprove = await xxxSigner.approve(addresses.LP, amountIn);
         await txApprove.wait();
@@ -28,8 +31,8 @@ task("uniswapLpSwap", "uniswapLpSwap")
         let allowance = await xxxSigner.allowance(signer.address, addresses.LP);
         console.log("Allowance: " + allowance);
 
-        // let tx = await lpSigner.swapExactTokensForETH(amountIn, amountOutMin, path, signer.address, deadline);
-        let tx = await lpSigner.swapExactTokensForETHSupportingFeeOnTransferTokens(amountIn, amountOutMin, path, signer.address, deadline);
+        let tx = await lpSigner.swapExactTokensForETH(amountIn, 0, path, signer.address, deadline);
+        // let tx = await lpSigner.swapExactTokensForETHSupportingFeeOnTransferTokens(amountIn, amountOutMin, path, signer.address, deadline);
         await tx.wait();
 
         console.log("Done");
