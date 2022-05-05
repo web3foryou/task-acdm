@@ -21,3 +21,7 @@ require("./dao/daoFinish.ts");
 require("./acdmPlatform/acdmPlatformBasicSetup.ts");
 require("./acdmPlatform/acdmPlatformRegister.ts");
 require("./acdmPlatform/acdmPlatformNextRound.ts");
+require("./acdmPlatform/acdmPlatformBuyTokens.ts");
+require("./acdmPlatform/acdmPlatformMakeOrder.ts");
+require("./acdmPlatform/acdmPlatformCloseOrder.ts");
+require("./acdmPlatform/acdmPlatformBuyOrder.ts");

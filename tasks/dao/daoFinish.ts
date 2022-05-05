@@ -16,7 +16,7 @@ task("daoFinish", "daoFinish")
         let dao = new hre.ethers.Contract(addresses.DAO, ContractArtifactDao.abi, signer);
         let daoSigner = dao.connect(signer);
 
-        if (hre.hardhatArguments.network as string == "ganache") {
+        if (process.env.NETWORK as string == "ganache") {
             const minPeriod = 3 * 24 * 60 * 60;
             await hre.ethers.provider.send("evm_increaseTime", [minPeriod]);
             await hre.ethers.provider.send("evm_mine", []);

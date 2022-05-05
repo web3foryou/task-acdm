@@ -16,7 +16,7 @@ task("stakingClaim", "stakingClaim")
         let contractErc20 = new hre.ethers.Contract(addresses.XXX, ContractErc20Artifact.abi, user);
         let contractErc20Signer = contractStaking.connect(user);
 
-        if (hre.hardhatArguments.network as string == "ganache") {
+        if (process.env.NETWORK as string == "ganache") {
             const minPeriod = 3 * 24 * 60 * 60;
             await hre.ethers.provider.send("evm_increaseTime", [minPeriod]);
             await hre.ethers.provider.send("evm_mine", []);

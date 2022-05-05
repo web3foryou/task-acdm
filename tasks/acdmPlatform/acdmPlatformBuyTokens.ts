@@ -2,7 +2,7 @@ import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import {Address} from "../../app/address"
 
-task("acdmPlatformNextRound", "acdmPlatformNextRound")
+task("acdmPlatformBuyTokens", "acdmPlatformBuyTokens")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
@@ -12,16 +12,17 @@ task("acdmPlatformNextRound", "acdmPlatformNextRound")
         let platform = new hre.ethers.Contract(addresses.PLATFORM, ContractArtifactPlatform.abi, signer);
         let platformSigner = platform.connect(signer);
 
-        if (process.env.NETWORK as string == "ganache") {
-            let roundTime = 24 * 60 * 60;
-            await hre.ethers.provider.send("evm_increaseTime", [roundTime]);
-            await hre.ethers.provider.send("evm_mine", []);
-        }
+        const ContractArtifactAcdm = require('../../artifacts/contracts/ACDMToken.sol/ACDMToken.json');
+        let acdm = new hre.ethers.Contract(addresses.ACDM, ContractArtifactAcdm.abi, signer);
+        let acdmSigner = acdm.connect(signer);
 
-        let tx = await platformSigner.nextRound();
+        let amount = hre.ethers.utils.parseEther("0.1");
+        const options = {value: amount}
+        let tx = await platformSigner.buyTokens(options);
         await tx.wait();
 
-        console.log("roundSale: " + await platformSigner.roundSale());
+        let balanceOf = await acdm.balanceOf(signer.address)
+        console.log("balanceOf: " + balanceOf);
         console.log("Done");
     });
 

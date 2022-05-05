@@ -17,8 +17,6 @@ task("daoAddProposal", "daoAddProposal")
 
         let lockTimeNew = 4 * 24 * 60 * 60;
         let callData = staking.interface.encodeFunctionData("changeLockTime", [lockTimeNew]);
-        await dao.addProposal(callData, staking.address, "changeLockTime")
-
         let tx = await daoSigner.addProposal(callData, addresses.STAKING, "changeLockTime")
         await tx.wait();
         let lastProposal = await daoSigner.lastProposal();
