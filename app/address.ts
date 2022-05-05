@@ -4,7 +4,6 @@ export class Address {
     STAKING: string;
     ACDM: string;
     LP: string;
-    LP_TEST: string;
     XXX: string;
     USER: string;
 
