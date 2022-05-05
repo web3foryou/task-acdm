@@ -6,14 +6,14 @@ task("daoFinish", "daoFinish")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
-        let adresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const ContractArtifactStaking = require('../../artifacts/contracts/Staking.sol/Staking.json');
-        let staking = new hre.ethers.Contract(adresses.STAKING, ContractArtifactStaking.abi, signer);
+        let staking = new hre.ethers.Contract(addresses.STAKING, ContractArtifactStaking.abi, signer);
         let stakingSigner = staking.connect(signer);
 
         const ContractArtifactDao = require('../../artifacts/contracts/Dao.sol/Dao.json');
-        let dao = new hre.ethers.Contract(adresses.DAO, ContractArtifactDao.abi, signer);
+        let dao = new hre.ethers.Contract(addresses.DAO, ContractArtifactDao.abi, signer);
         let daoSigner = dao.connect(signer);
 
         if (hre.hardhatArguments.network as string == "ganache") {

@@ -4,12 +4,12 @@ import {Address} from "../../app/address"
 
 task("stakingUnstake", "stakingUnstake")
     .setAction(async (taskArgs, hre) => {
-        let adresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const [user] = await hre.ethers.getSigners();
 
         const ContractStakingArtifact = require('../../artifacts/contracts/Staking.sol/Staking.json');
-        let contractStaking = new hre.ethers.Contract(adresses.STAKING, ContractStakingArtifact.abi, user);
+        let contractStaking = new hre.ethers.Contract(addresses.STAKING, ContractStakingArtifact.abi, user);
         let contractStakingSigner = contractStaking.connect(user);
 
         if (hre.hardhatArguments.network as string == "ganache") {

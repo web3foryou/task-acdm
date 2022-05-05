@@ -6,7 +6,7 @@ task("xxxApprove", "xxxApprove")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
-        let addresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const xxxArtifact = require('../../artifacts/contracts/XXXToken.sol/XXXToken.json');
         let xxx = new hre.ethers.Contract(addresses.XXX, xxxArtifact.abi, signer);

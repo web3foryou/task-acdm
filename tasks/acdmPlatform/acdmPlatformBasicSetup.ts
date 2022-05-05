@@ -6,17 +6,17 @@ task("acdmPlatformNextRound", "acdmPlatformNextRound")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
-        let adresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const ContractArtifactAcdm = require('../../artifacts/contracts/ACDMToken.sol/ACDMToken.json');
-        let acdm = new hre.ethers.Contract(adresses.ACDM, ContractArtifactAcdm.abi, signer);
+        let acdm = new hre.ethers.Contract(addresses.ACDM, ContractArtifactAcdm.abi, signer);
         let acdmSigner = acdm.connect(signer);
 
-        let tx = await acdmSigner.addMember(adresses.PLATFORM);
+        let tx = await acdmSigner.addMember(addresses.PLATFORM);
         await tx.wait();
 
         let mintBalance = (10 * 1000 * 1000) * 10 ** 6;
-        tx = await acdmSigner.transfer(adresses.PLATFORM, mintBalance);
+        tx = await acdmSigner.transfer(addresses.PLATFORM, mintBalance);
         await tx.wait();
 
         console.log("Done");

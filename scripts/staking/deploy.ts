@@ -1,13 +1,12 @@
 import { ethers } from "hardhat";
-import {network} from 'hardhat'
 import {Address} from "../../app/address"
 
 async function main() {
-  let address = new Address(network.name);
+  let addresses = new Address(process.env.NETWORK as string);
 
   const nameStaking = "Staking";
   const stakingFactory = await ethers.getContractFactory("Staking");
-  const staking = await stakingFactory.deploy(nameStaking, address.LP, address.XXX);
+  const staking = await stakingFactory.deploy(nameStaking, addresses.LP, addresses.XXX);
   await staking.deployed();
 
   console.log("staking deployed to:", staking.address);

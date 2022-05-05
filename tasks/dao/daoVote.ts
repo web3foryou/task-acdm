@@ -6,14 +6,14 @@ task("daoVote", "daoVote")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
-        let adresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const ContractArtifactErc20 = require('../../artifacts/contracts/XXXToken.sol/XXXToken.json');
-        let erc20 = new hre.ethers.Contract(adresses.XXX, ContractArtifactErc20.abi, signer);
+        let erc20 = new hre.ethers.Contract(addresses.XXX, ContractArtifactErc20.abi, signer);
         let erc20Signer = erc20.connect(signer);
 
         const ContractArtifactDao = require('../../artifacts/contracts/Dao.sol/Dao.json');
-        let dao = new hre.ethers.Contract(adresses.DAO, ContractArtifactDao.abi, signer);
+        let dao = new hre.ethers.Contract(addresses.DAO, ContractArtifactDao.abi, signer);
         let daoSigner = dao.connect(signer);
 
         let lastProposal = await daoSigner.lastProposal();

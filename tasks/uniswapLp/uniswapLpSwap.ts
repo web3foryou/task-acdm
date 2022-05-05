@@ -6,7 +6,7 @@ task("uniswapLpSwap", "uniswapLpSwap")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
-        let addresses = new Address(hre.hardhatArguments.network as string);
+        let addresses = new Address(process.env.NETWORK as string);
 
         const lpArtifact = require('../../artifacts/contracts/IUniswapLpToken.sol/IUniswapLpToken.json');
         let lp = new hre.ethers.Contract(addresses.LP, lpArtifact.abi, signer);
