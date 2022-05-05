@@ -2,7 +2,7 @@ import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import {Address} from "../../app/address"
 
-task("lpBalanceOf", "lpBalanceOf")
+task("uniswapLpBalanceOf", "uniswapLpBalanceOf")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 

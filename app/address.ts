@@ -5,6 +5,7 @@ export class Address {
     ACDM: string;
     LP: string;
     XXX: string;
+    USER: string;
 
     constructor(network: string) {
         this.PLATFORM = process.env.CONTRACT_PLATFORM as string;
@@ -13,6 +14,7 @@ export class Address {
         this.ACDM = process.env.CONTRACT_ACDM as string;
         this.LP = process.env.CONTRACT_LP as string;
         this.XXX = process.env.CONTRACT_XXX as string;
+        this.USER = process.env.ADDRESS_G_1 as string;
 
         if (network == "rinkeby") {
             this.PLATFORM = process.env.CONTRACT_PLATFORM_RINKEBY as string;
@@ -21,6 +23,7 @@ export class Address {
             this.ACDM = process.env.CONTRACT_ACDM_RINKEBY as string;
             this.LP = process.env.CONTRACT_LP_RINKEBY as string;
             this.XXX = process.env.CONTRACT_XXX_RINKEBY as string;
+            this.USER = process.env.ADDRESS_1 as string;
         }
     }
 }

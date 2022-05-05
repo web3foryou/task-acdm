@@ -2,7 +2,7 @@ import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import {Address} from "../../app/address"
 
-task("lpSwap", "lpSwap")
+task("uniswapLpSwap", "uniswapLpSwap")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
@@ -20,8 +20,7 @@ task("lpSwap", "lpSwap")
         let amountOutMin = hre.ethers.utils.parseEther("0.001");
         // let amountOutMin = 18 042 007 838 410 927;
         let path = ["0x89b254f400e49509C4a28f31C054548Dac545136", "0xc778417E063141139Fce010982780140Aa0cD5Ab"];
-        let address = "0x8994E7Cacd904dafE2Dd6EbcC5342DeeAf71Cd51";
-        let deadline = 1652668536;
+        let deadline = 1651767093;
 
         let txApprove = await xxxSigner.approve(addresses.LP, amountIn);
         await txApprove.wait();
@@ -29,7 +28,8 @@ task("lpSwap", "lpSwap")
         let allowance = await xxxSigner.allowance(signer.address, addresses.LP);
         console.log("Allowance: " + allowance);
 
-        let tx = await lpSigner.swapExactTokensForETH(amountIn, amountOutMin, path, address, deadline);
+        // let tx = await lpSigner.swapExactTokensForETH(amountIn, amountOutMin, path, signer.address, deadline);
+        let tx = await lpSigner.swapExactTokensForETHSupportingFeeOnTransferTokens(amountIn, amountOutMin, path, signer.address, deadline);
         await tx.wait();
 
         console.log("Done");

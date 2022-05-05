@@ -3,6 +3,8 @@ import { ethers } from "hardhat";
 
 describe("Staking", function () {
   async function deploy() : Promise<any> {
+    const [user, user2, user3] = await ethers.getSigners();
+
     const nameLp = "LP Token";
     const symbolLp = "LP";
     const lpFactory = await ethers.getContractFactory("LpToken");
@@ -23,7 +25,16 @@ describe("Staking", function () {
     const staking = await stakingFactory.deploy(nameStaking, lp.address, xxx.address);
     await staking.deployed();
 
-    return [lp, xxx, staking];
+    const minQuorum = ethers.utils.parseEther("10.0");
+    const minPeriod = 3 * 24 * 60 * 60;
+    const Dao = await ethers.getContractFactory("Dao");
+    const dao = await Dao.deploy(user.address, minQuorum, minPeriod, staking.address);
+    await dao.deployed();
+
+    await staking.addMember(dao.address);
+    await staking.setDao(dao.address);
+
+    return [lp, xxx, staking, dao];
   }
 
   it("name, stake, balanceOf, unstake, claim", async function () {
@@ -34,7 +45,7 @@ describe("Staking", function () {
     expect(await staking.name()).to.equal(nameStaking);
 
     let stakingAmount = ethers.utils.parseEther("1.0");
-    const prcReward = 20;
+    const prcReward = 3;
     await lp.approve(staking.address, stakingAmount);
     await staking.stake(stakingAmount);
     expect(await staking.balanceOf(user.address)).to.equal(stakingAmount);
@@ -42,7 +53,9 @@ describe("Staking", function () {
 
     await expect(staking.unstake()).to.be.revertedWith('Time error.');
 
-    await ethers.provider.send("evm_increaseTime", [1200]);
+    let lockTime = 3 * 24 * 60 * 60;
+
+    await ethers.provider.send("evm_increaseTime", [lockTime]);
     await ethers.provider.send("evm_mine", []);
 
     await staking.unstake();
@@ -61,7 +74,8 @@ describe("Staking", function () {
 
     let stakingAmount = ethers.utils.parseEther("1.0");
     let rewardsAmount = ethers.utils.parseEther("1000.0");
-    const prcReward = 20;
+    const prcReward = 3;
+    let rewardTime = 24 * 60 * 60;
 
     // вывод без баланса
     await expect(staking.claim()).to.be.revertedWith('Zero balance.');
@@ -71,27 +85,27 @@ describe("Staking", function () {
     await xxx.mint(staking.address, rewardsAmount);
 
     // вывод через половину времени
-    await ethers.provider.send("evm_increaseTime", [600]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime / 2]);
     await ethers.provider.send("evm_mine", []);
     // вывод через половину времени
     await expect(staking.claim()).to.be.revertedWith('Time error.');
 
     // вывод через один период ревардов
-    await ethers.provider.send("evm_increaseTime", [600]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime / 2]);
     await ethers.provider.send("evm_mine", []);
     await staking.claim();
     let totalRewards = ethers.BigNumber.from((Number(stakingAmount) * prcReward / 100).toString());
     expect(await xxx.balanceOf(user.address)).to.equal(totalRewards);
 
     // вывод через +2 периода ревардов
-    await ethers.provider.send("evm_increaseTime", [2400]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime * 2]);
     await ethers.provider.send("evm_mine", []);
     await staking.claim();
     totalRewards = ethers.BigNumber.from((3 * Number(stakingAmount) * prcReward / 100).toString());
     expect(await xxx.balanceOf(user.address)).to.equal(totalRewards);
 
     // вывод через +4 периода ревардов
-    await ethers.provider.send("evm_increaseTime", [4800]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime * 4]);
     await ethers.provider.send("evm_mine", []);
     await staking.claim();
     totalRewards = ethers.BigNumber.from((7 * Number(stakingAmount) * prcReward / 100).toString());
@@ -128,7 +142,8 @@ describe("Staking", function () {
 
     let stakingAmount = ethers.utils.parseEther("1.0");
     let rewardsAmount = ethers.utils.parseEther("1000.0");
-    const prcReward = 20;
+    const prcReward = 3;
+    let rewardTime = 24 * 60 * 60;
 
     // вывод без баланса
     await expect(staking.claim()).to.be.revertedWith('Zero balance.');
@@ -138,11 +153,11 @@ describe("Staking", function () {
     await xxx.mint(staking.address, rewardsAmount);
 
     // второй стэйк после одного периода + вывод
-    await ethers.provider.send("evm_increaseTime", [1200]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime]);
     await ethers.provider.send("evm_mine", []);
     await lp.approve(staking.address, stakingAmount);
     await staking.stake(stakingAmount);
-    await ethers.provider.send("evm_increaseTime", [1200]);
+    await ethers.provider.send("evm_increaseTime", [rewardTime]);
     await ethers.provider.send("evm_mine", []);
     await staking.claim();
     let totalRewards = ethers.BigNumber.from((3 * Number(stakingAmount) * prcReward / 100).toString());
@@ -153,6 +168,37 @@ describe("Staking", function () {
     await staking.stake(stakingAmount);
     await lp.approve(staking.address, stakingAmount);
     await staking.stake(stakingAmount);
+  });
 
+  it("changeLockTime", async function () {
+    const [lp, xxx, staking] = await deploy();
+
+    let newLockTime = 24 * 60 * 60;
+
+    await staking.changeLockTime(newLockTime);
+
+    expect(await staking.lockTime()).to.equal(newLockTime);
+  });
+
+  it("Dao: You have an open vote", async function () {
+    const [user, user2, user3] = await ethers.getSigners();
+    const [lp, xxx, staking, dao] = await deploy();
+
+    let stakingAmount = ethers.utils.parseEther("1.0");
+    await lp.approve(staking.address, stakingAmount);
+    await staking.stake(stakingAmount);
+
+    let lockTime = 3 * 24 * 60 * 60;
+    let lockTimeNew = 2 * 24 * 60 * 60;
+
+    await ethers.provider.send("evm_increaseTime", [lockTime]);
+    await ethers.provider.send("evm_mine", []);
+
+    let callData = staking.interface.encodeFunctionData("changeLockTime", [lockTimeNew]);
+    await dao.addProposal(callData, staking.address, "changeLockTime")
+    let lastProposal = await dao.lastProposal();
+    await dao.vote(lastProposal, true);
+
+    await expect(staking.unstake()).to.be.revertedWith('You have an open vote.');
   });
 });

@@ -3,16 +3,16 @@ pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
 import "./LpToken.sol";
+import "./Staking.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 contract Dao {
     address  private _chairPerson;
-    address private _voteToken;
+    address private _staking;
     uint private _minQuorum;
     uint private _minPeriod;
-    mapping(address => uint) private deposits;
     mapping(uint => Item) private _proposals;
-    uint public lastProposal = 0;
+    uint public lastProposal;
 
     struct Item {
         bool statusFinish;
@@ -25,24 +25,11 @@ contract Dao {
         mapping(address => uint) voters;
     }
 
-    constructor(address chairPerson, address voteToken, uint _minimumQuorum, uint minPeriod) {
+    constructor(address chairPerson, uint _minimumQuorum, uint minPeriod, address staking) {
         _chairPerson = chairPerson;
-        _voteToken = voteToken;
         _minQuorum = _minimumQuorum;
         _minPeriod = minPeriod;
-    }
-
-    function deposit(uint amount) public {
-        require(LpToken(_voteToken).allowance(msg.sender, address(this)) >= amount, "Don't allowance tokens.");
-
-        SafeERC20.safeTransferFrom(
-            LpToken(_voteToken),
-            msg.sender,
-            address(this),
-            amount
-        );
-
-        deposits[msg.sender] += amount;
+        _staking = staking;
     }
 
     function addProposal(bytes memory callData, address recipient, string memory description) public {
@@ -56,16 +43,17 @@ contract Dao {
     }
 
     function vote(uint id, bool voteFor) public {
-        require(deposits[msg.sender] > 0, "Don't have deposit");
+        uint deposit = Staking(_staking).balanceOf(msg.sender);
+        require(deposit > 0, "Don't have deposit");
         require(_proposals[id].voters[msg.sender] == 0, "Already voted.");
 
         if (voteFor) {
-            _proposals[id].voteFor += deposits[msg.sender];
+            _proposals[id].voteFor += deposit;
         } else {
-            _proposals[id].voteAgainsts += deposits[msg.sender];
+            _proposals[id].voteAgainsts += deposit;
         }
 
-        _proposals[id].voters[msg.sender] += deposits[msg.sender];
+        _proposals[id].voters[msg.sender] += deposit;
     }
 
     function finishProposal(uint id) public {
@@ -81,27 +69,17 @@ contract Dao {
         }
     }
 
-    function getTokens() public {
-        require(deposits[msg.sender] > 0, "Don't have tokens.");
-
+    function checkForUnstake(address _addr) public view returns (bool){
         for (uint i = 1; i <= lastProposal; i++) {
             if (_proposals[i].statusFinish) {
                 continue;
             }
 
-            require(_proposals[i].voters[msg.sender] == 0, "Existing open offer.");
+            if (_proposals[i].voters[_addr] > 0) {
+                return false;
+            }
         }
-
-        uint amount = deposits[msg.sender];
-
-        deposits[msg.sender] = 0;
-
-        SafeERC20.safeTransfer(
-            LpToken(_voteToken),
-            msg.sender,
-            amount
-        );
+        return true;
     }
-
 
 }
