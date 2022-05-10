@@ -57,11 +57,11 @@ describe("Dao", function () {
         //addProposal
         let lockTimeNew = 2 * 24 * 60 * 60;
         let callData = staking.interface.encodeFunctionData("changeLockTime", [lockTimeNew]);
-        await dao.addProposal(callData, staking.address, "changeLockTime")
+        await dao.addProposal([callData], [staking.address], "changeLockTime");
         let lastProposal = await dao.lastProposal();
 
         // addProposal -> Not chairperson.
-        await expect(dao.connect(user2).addProposal(callData, staking.address, "changeLockTime"))
+        await expect(dao.connect(user2).addProposal([callData], [staking.address], "changeLockTime"))
             .to.be.revertedWith('Not chairperson.');
 
         // vote()
@@ -104,7 +104,7 @@ describe("Dao", function () {
             .to.be.revertedWith('Already finished.');
 
         // finishProposal() -> Few votes.
-        await dao.addProposal(callData, staking.address, "changeLockTime")
+        await dao.addProposal([callData], [staking.address], "changeLockTime")
         let lastProposal2 = await dao.lastProposal();
         await ethers.provider.send("evm_increaseTime", [minPeriod]);
         await ethers.provider.send("evm_mine", []);

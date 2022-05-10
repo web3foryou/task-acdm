@@ -14,7 +14,7 @@ task("xxxBalanceOf", "xxxBalanceOf")
 
         let balanceOf = await xxxSigner.balanceOf(signer.address);
 
-        console.log("balanceOf: " + balanceOf);
+        console.log("balanceOf: " + parseInt((balanceOf).toString()) / 10 ** 18);
         console.log("Done");
     });
 

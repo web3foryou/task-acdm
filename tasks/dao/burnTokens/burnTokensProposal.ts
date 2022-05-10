@@ -1,9 +1,13 @@
 import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
-import {Address} from "../../app/address"
+import {Address} from "../../../app/address"
 
-task("daoAddProposal", "daoAddProposal")
+task("burnTokensProposal", "burnTokensProposal")
     .setAction(async (taskArgs, hre) => {
+
+        // Через ДАО голосование пользователи будут решать отдать эту комиссию овнеру или на эти ETH купить XXXToken на uniswap-е а после их сжечь.
+
+
         const [signer] = await hre.ethers.getSigners();
 
         let addresses = new Address(process.env.NETWORK as string);

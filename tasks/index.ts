@@ -1,6 +1,10 @@
+//account
+require("./account/accountBalance.ts");
+require("./account/accountAddBalance.ts");
+
 //lp
-require("./uniswapLp/uniswapLpBalanceOf.ts");
-require("./uniswapLp/uniswapLpSwap.ts");
+require("./uniswap/uniswapBalanceOf.ts");
+require("./uniswap/uniswapSwap.ts");
 
 //xxx
 require("./xxx/xxxBalanceOf.ts");
@@ -16,6 +20,11 @@ require("./staking/stakingUnstake.ts");
 require("./dao/daoAddProposal.ts");
 require("./dao/daoVote.ts");
 require("./dao/daoFinish.ts");
+
+// dao -> burnTokens
+require("./dao/burnTokens/burnTokensProposal.ts");
+require("./dao/burnTokens/burnTokensVote.ts");
+require("./dao/burnTokens/burnTokensFinish.ts");
 
 //acdmPlatform
 require("./acdmPlatform/acdmPlatformBasicSetup.ts");

@@ -2,7 +2,7 @@ import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import {Address} from "../../app/address"
 
-task("uniswapLpBalanceOf", "uniswapLpBalanceOf")
+task("uniswapBalanceOf", "uniswapBalanceOf")
     .setAction(async (taskArgs, hre) => {
         const [signer] = await hre.ethers.getSigners();
 
@@ -15,7 +15,7 @@ task("uniswapLpBalanceOf", "uniswapLpBalanceOf")
         let balanceOf = await lpSigner.balanceOf(signer.address);
 
         console.log("address: " + await signer.address);
-        console.log("balanceOf: " + balanceOf);
+        console.log("balanceOf: " + balanceOf / 10 ** 18);
         console.log("Done");
     });
 

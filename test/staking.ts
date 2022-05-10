@@ -195,7 +195,7 @@ describe("Staking", function () {
     await ethers.provider.send("evm_mine", []);
 
     let callData = staking.interface.encodeFunctionData("changeLockTime", [lockTimeNew]);
-    await dao.addProposal(callData, staking.address, "changeLockTime")
+    await dao.addProposal([callData], [staking.address], "changeLockTime")
     let lastProposal = await dao.lastProposal();
     await dao.vote(lastProposal, true);
 

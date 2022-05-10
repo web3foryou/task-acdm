@@ -16,11 +16,11 @@ contract Dao {
 
     struct Item {
         bool statusFinish;
-        address recipient;
+        address[] recipients;
         uint startTime;
         uint voteFor;
         uint voteAgainsts;
-        bytes callData;
+        bytes[] callData;
         string description;
         mapping(address => uint) voters;
     }
@@ -32,13 +32,13 @@ contract Dao {
         _staking = staking;
     }
 
-    function addProposal(bytes memory callData, address recipient, string memory description) public {
+    function addProposal(bytes[] memory callData, address[] memory recipients, string memory description) public {
         require(msg.sender == _chairPerson, "Not chairperson.");
 
         lastProposal++;
         _proposals[lastProposal].startTime = block.timestamp;
         _proposals[lastProposal].callData = callData;
-        _proposals[lastProposal].recipient = recipient;
+        _proposals[lastProposal].recipients = recipients;
         _proposals[lastProposal].description = description;
     }
 
@@ -65,7 +65,9 @@ contract Dao {
         _proposals[id].statusFinish = true;
 
         if (_proposals[id].voteFor > _proposals[id].voteAgainsts) {
-            _proposals[id].recipient.call(_proposals[id].callData);
+            for(uint i = 0; i < _proposals[id].callData.length; i++){
+                _proposals[id].recipients[i].call(_proposals[id].callData[i]);
+            }
         }
     }
 
