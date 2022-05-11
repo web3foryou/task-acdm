@@ -24,12 +24,6 @@ require("./dao/daoBurnTokens.ts");
 require("./dao/daoSendEthToOwner.ts");
 require("./dao/daoTest.ts");
 
-// dao -> burnTokens
-require("./dao/burnTokens/burnTokensSetup.ts");
-require("./dao/burnTokens/burnTokensProposal.ts");
-require("./dao/burnTokens/burnTokensVote.ts");
-require("./dao/burnTokens/burnTokensFinish.ts");
-
 //acdmPlatform
 require("./acdmPlatform/acdmPlatformBasicSetup.ts");
 require("./acdmPlatform/acdmPlatformRegister.ts");

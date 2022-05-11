@@ -6,8 +6,9 @@ import "./ACDMToken.sol";
 import "./XXXToken.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract ACDMPlatform {
+contract ACDMPlatform is AccessControl {
 
     bool public roundSale; // true - Sale, false - Trade
     address private _acdmToken;
@@ -39,6 +40,7 @@ contract ACDMPlatform {
         owner = msg.sender;
         _acdmToken = acdmToken_;
         roundTime = roundTime_;
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
     fallback() external payable {}
@@ -191,7 +193,7 @@ contract ACDMPlatform {
         );
     }
 
-    function buyAndBurn(address router, address weth, address xxx) public {
+    function buyAndBurn(address router, address weth, address xxx) public onlyMember {
         address[] memory addr = new address[](2);
         addr[0] = weth;
         addr[1] = xxx;
@@ -200,7 +202,17 @@ contract ACDMPlatform {
         XXXToken(xxx).burn(XXXToken(xxx).balanceOf(address(this)));
     }
 
-    function sendEthToOwner() public {
+    function sendEthToOwner() public onlyMember {
         owner.call{value : (payable(address(this))).balance}("");
+    }
+
+
+    function addMember(address _addr) public onlyMember {
+        _setupRole(DEFAULT_ADMIN_ROLE, _addr);
+    }
+
+    modifier onlyMember() {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Restricted to members.");
+        _;
     }
 }

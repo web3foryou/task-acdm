@@ -35,6 +35,8 @@ task("daoBurnTokens", "daoBurnTokens")
         await xxxSigner.addMember(platformSigner.address);
         await xxxSigner.addMember(dao.address);
 
+        await platformSigner.addMember(dao.address);
+
         let tx;
 
         // заливаем баланс для теста
