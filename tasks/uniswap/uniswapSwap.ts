@@ -8,8 +8,8 @@ task("uniswapSwap", "uniswapSwap")
 
         let addresses = new Address(process.env.NETWORK as string);
 
-        const lpArtifact = require('../../artifacts/contracts/IUniswapLpToken.sol/IUniswapLpToken.json');
-        let swap = new hre.ethers.Contract(addresses.SWAP, lpArtifact.abi, signer);
+        const swapArtifact = require('../../artifacts/contracts/IUniswapLpToken.sol/IUniswapLpToken.json');
+        let swap = new hre.ethers.Contract(addresses.SWAP, swapArtifact.abi, signer);
         let swapSigner = swap.connect(signer);
 
         const xxxArtifact = require('../../artifacts/contracts/XXXToken.sol/XXXToken.json');
@@ -17,9 +17,7 @@ task("uniswapSwap", "uniswapSwap")
         let xxxSigner = xxx.connect(signer);
 
         let amountIn = hre.ethers.utils.parseEther("1500");
-        let amountOutMin = hre.ethers.utils.parseEther("0.001");
-        // let amountOutMin = 18 042 007 838 410 927;
-        let path = ["0x89b254f400e49509C4a28f31C054548Dac545136", "0xc778417E063141139Fce010982780140Aa0cD5Ab"];
+        let path = [addresses.XXX, addresses.WETH];
         let deadline = 2751767093;
 
         let allowance = await xxxSigner.allowance(signer.address, addresses.SWAP);

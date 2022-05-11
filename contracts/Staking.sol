@@ -11,7 +11,7 @@ import "hardhat/console.sol";
 contract Staking is AccessControl {
     address public lpToken;
     address public rewardToken;
-    address public dao;
+    address payable public dao;
 
     mapping(address => uint) private _balances;
     mapping(address => uint) private _timeStake;
@@ -94,7 +94,7 @@ contract Staking is AccessControl {
         prcReward = _prcReward;
     }
 
-    function setDao(address _addr) public onlyMember {
+    function setDao(address payable _addr) public onlyMember {
         dao = _addr;
     }
 

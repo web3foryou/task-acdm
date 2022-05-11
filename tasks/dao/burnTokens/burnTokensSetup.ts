@@ -2,13 +2,13 @@ import {task} from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import {Address} from "../../../app/address"
 
-task("burnTokensProposal", "burnTokensProposal")
+task("burnTokensSetup", "burnTokensSetup")
     .setAction(async (taskArgs, hre) => {
 
         // Через ДАО голосование пользователи будут решать отдать эту комиссию овнеру или на эти ETH купить XXXToken на uniswap-е а после их сжечь.
 
 
-        const [signer] = await hre.ethers.getSigners();
+        const [signer, user3] = await hre.ethers.getSigners();
 
         let addresses = new Address(process.env.NETWORK as string);
 
@@ -23,9 +23,12 @@ task("burnTokensProposal", "burnTokensProposal")
         let dao = new hre.ethers.Contract(addresses.DAO, ContractArtifactDao.abi, signer);
         let daoSigner = dao.connect(signer);
 
-        const balance = await hre.ethers.provider.getBalance(platform.address);
-        let balance2 = parseInt(balance.toString()) / 10 ** 18;
-        console.log("getBalance: " + balance2);
+        // начисляем контракту эфиров, чтобы сэмулировать что они там были и что-то с ними делать
+            console.log(addresses.PLATFORM)
+
+        console.log("getBalance: " + parseInt((await hre.ethers.provider.getBalance(platform.address)).toString()) / 10 ** 18);
+
+        console.log("Done");
 
         // let lockTimeNew = 4 * 24 * 60 * 60;
         // let callData = staking.interface.encodeFunctionData("changeLockTime", [lockTimeNew]);

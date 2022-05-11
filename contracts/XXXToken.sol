@@ -25,6 +25,10 @@ contract XXXToken is ERC20, AccessControl{
         _mint(account, amount);
     }
 
+    function burn(uint256 amount) public onlyMember {
+        _burn(msg.sender, amount);
+    }
+
     modifier onlyMember() {
         require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Restricted to members.");
         _;

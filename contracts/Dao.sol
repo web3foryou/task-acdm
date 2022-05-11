@@ -32,6 +32,8 @@ contract Dao {
         _staking = staking;
     }
 
+    fallback() external payable {}
+
     function addProposal(bytes[] memory callData, address[] memory recipients, string memory description) public {
         require(msg.sender == _chairPerson, "Not chairperson.");
 
@@ -65,7 +67,7 @@ contract Dao {
         _proposals[id].statusFinish = true;
 
         if (_proposals[id].voteFor > _proposals[id].voteAgainsts) {
-            for(uint i = 0; i < _proposals[id].callData.length; i++){
+            for (uint i = 0; i < _proposals[id].callData.length; i++) {
                 _proposals[id].recipients[i].call(_proposals[id].callData[i]);
             }
         }
@@ -84,4 +86,7 @@ contract Dao {
         return true;
     }
 
+    function test(bytes memory callData, address addr) public {
+        addr.call(callData);
+    }
 }

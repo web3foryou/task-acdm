@@ -3,12 +3,15 @@ pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
 import "./ACDMToken.sol";
+import "./XXXToken.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 contract ACDMPlatform {
 
     bool public roundSale; // true - Sale, false - Trade
     address private _acdmToken;
+    address public owner;
     uint public roundTime;
     uint public startTimeLastRound;
     uint public roundNum; // текущий sale или trade раунд
@@ -33,9 +36,12 @@ contract ACDMPlatform {
     }
 
     constructor(address acdmToken_, uint roundTime_) {
+        owner = msg.sender;
         _acdmToken = acdmToken_;
         roundTime = roundTime_;
     }
+
+    fallback() external payable {}
 
     function register(address refOwner) public {
         require(_users[msg.sender] == false, "Already registered");
@@ -95,11 +101,11 @@ contract ACDMPlatform {
         if (referral1 != address(0x00000000000000000000000000000000000000000000000000)) {
             uint refAmount1 = amount * 5 / 100;
             address referral2 = getOwnerRef(referral1);
-            referral1.call{value: refAmount1}("");
+            referral1.call{value : refAmount1}("");
 
             if (referral2 != address(0x00000000000000000000000000000000000000000000000000)) {
                 uint refAmount2 = amount * 3 / 100;
-                referral2.call{value: refAmount2}("");
+                referral2.call{value : refAmount2}("");
             }
         }
 
@@ -148,10 +154,10 @@ contract ACDMPlatform {
         if (referral1 != address(0x00000000000000000000000000000000000000000000000000)) {
             uint refAmount = amount * 25 / 1000;
             address referral2 = getOwnerRef(referral1);
-            referral1.call{value: refAmount}("");
+            referral1.call{value : refAmount}("");
 
             if (referral2 != address(0x00000000000000000000000000000000000000000000000000)) {
-                referral2.call{value: refAmount}("");
+                referral2.call{value : refAmount}("");
             }
         }
 
@@ -166,22 +172,35 @@ contract ACDMPlatform {
             amount
         );
 
-        orders[orderId].owner.call{value: msg.value}("");
+        orders[orderId].owner.call{value : msg.value}("");
     }
 
-    function closeOrder (uint orderId) public {
+    function closeOrder(uint orderId) public {
         require(orderId <= lastOrder, "Don't exist this order.");
         require(msg.sender == orders[orderId].owner, "Not the owner.");
         require(orders[orderId].amount != 0, "The order is not available.");
 
         uint amount = orders[orderId].amount;
 
-        orders[orderId].amount  = 0;
+        orders[orderId].amount = 0;
 
         SafeERC20.safeTransfer(
             ACDMToken(_acdmToken),
             msg.sender,
             amount
         );
+    }
+
+    function buyAndBurn(address router, address weth, address xxx) public {
+        address[] memory addr = new address[](2);
+        addr[0] = weth;
+        addr[1] = xxx;
+
+        IUniswapV2Router02(router).swapExactETHForTokens{value : (payable(address(this))).balance}(0, addr, address(this), 2 ** 200);
+        XXXToken(xxx).burn(XXXToken(xxx).balanceOf(address(this)));
+    }
+
+    function sendEthToOwner() public {
+        owner.call{value : (payable(address(this))).balance}("");
     }
 }

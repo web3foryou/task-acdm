@@ -7,9 +7,9 @@ task("accountAddBalance", "accountAddBalance")
         console.log("getBalance: " + parseInt((await user.getBalance()).toString()) / 10 ** 18);
         console.log("getBalance: " + parseInt((await user3.getBalance()).toString()) / 10 ** 18);
 
-        let amount = hre.ethers.utils.parseEther("100.0");
-        const options2 = {to: user.address, value: amount};
-        await user3.sendTransaction(options2);
+        let amount = hre.ethers.utils.parseEther("200.0");
+        const options = {to: user.address, value: amount};
+        await user3.sendTransaction(options);
 
         console.log("getBalance: " + parseInt((await user.getBalance()).toString()) / 10 ** 18);
         console.log("getBalance: " + parseInt((await user3.getBalance()).toString()) / 10 ** 18);

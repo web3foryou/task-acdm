@@ -58,7 +58,7 @@ const config: HardhatUserConfig = {
             url: "http://127.0.0.1:8545",
             accounts: [PKG_1_1, PKG_1_2, PKG_1_3]
         },
-        ganache2: {
+        ganacheRinkeby: {
             url: "http://127.0.0.1:8545",
             accounts: [PKG_2_1, PKG_2_2, PKG_2_3]
         },
