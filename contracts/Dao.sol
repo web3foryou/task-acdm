@@ -11,17 +11,17 @@ contract Dao {
     address private _staking;
     uint private _minQuorum;
     uint private _minPeriod;
-    mapping(uint => Item) private _proposals;
     uint public lastProposal;
+    mapping(uint => Item) private _proposals;
 
     struct Item {
         bool statusFinish;
-        address[] recipients;
         uint startTime;
         uint voteFor;
         uint voteAgainsts;
-        bytes[] callData;
         string description;
+        address[] recipients;
+        bytes[] callData;
         mapping(address => uint) voters;
     }
 
