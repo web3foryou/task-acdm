@@ -35,7 +35,7 @@ task("daoSendEthToOwner", "daoSendEthToOwner")
         await xxxSigner.addMember(platformSigner.address);
         await xxxSigner.addMember(dao.address);
 
-        // await platformSigner.addMember(dao.address);
+        await platformSigner.addMember(dao.address);
 
         let tx;
 
