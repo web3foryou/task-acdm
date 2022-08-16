@@ -69,7 +69,7 @@ Price ETH = lastPrice*1,03+0,000004
 * Верифицировать контракты
 
 #### Ссылки: 
-* Схема https://app.diagrams.net/#G1gj3yihfvJl1WXPJtegO4N5j6q-Rd9ZMn
-* Уязвимости в безопасности  https://russianblogs.com/article/857220099/
-* ReentrancyGuard https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard 
-* uniswap https://docs.uniswap.org/protocol/V2/introduction 
+* [Схема](https://app.diagrams.net/#G1gj3yihfvJl1WXPJtegO4N5j6q-Rd9ZMn)
+* [Уязвимости в безопасности](https://russianblogs.com/article/857220099/)
+* [ReentrancyGuard](https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard) 
+* [Uniswap](https://docs.uniswap.org/protocol/V2/introduction )
