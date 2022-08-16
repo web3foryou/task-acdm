@@ -1,54 +1,60 @@
-# Платформа для продажи ACDM
-Платформа будет состоять из нескольких контрактов (ACDMToken, XXXToken, Staking, DAO, ACDMPlatform).
+# ACDM sales platform
+The platform will consist of several contracts (ACDMToken, XXXToken, Staking, DAO, ACDMPlatform).
 
-#### Описание ACDMToken
+#### ACDMToken description
 * name = ACADEM Coin
 * symbol = ACDM
 * decimals = 6
 
-#### Описание XXXToken
+#### XXXToken description
 * name = XXX Coin
 * symbol = XXX
 * decimals = 18
 
-XXXToken необходимо залистить на uniswap. Первоначальная цена токена 0,00001 ETH.
+XXXToken must be uploaded to uniswap. The initial price of the token is 0.00001 ETH.
 
-### Описание Staking
-Контракт стейкинга принимает ЛП токены(XXX/ETH). Застейканые токены лочатся на X_days после этого времени они могут выводить свои токены, также если пользователь участвовал в голосовании и оно не закончилось он не может вывести свой депозит.. Каждую неделю пользователям начисляются награда, 3% от их вклада. Выводить награду могут в любое время. Награда начисляется в XXXToken.
-X_days устанавливается только с помощью DAO голосования.
+### Staking description
+Stacking contract accepts LP tokens(XXX/ETH). Staked tokens are locked for X_days after that time they can withdraw their tokens, also if user participated in voting and it did not end he cannot withdraw his deposit. Every week users are rewarded with 3% of their deposit. They can withdraw the award at any time. The reward is credited in XXXToken.
 
-### Описание DAO
-Чтобы участвовать в DAO голосовании пользователю необходимо внести депозит в стэйкинг. Вес в голосовании зависит от депозита в стэйкинге (Например: внес в стэйкинг 100 LP, принимая участие в голосовании имею вес 100 голосов).
+X_days is set only with DAO voting.
+
+### Description of the DAO
+In order to participate in DAO voting user must make a deposit in the stacking. The weight in the voting depends on the deposit in the stacking (For example: deposited 100 LP in the stacking, taking part in the voting have the weight of 100 votes).
 
 
-### Описание ACDMPlatform
-Есть 2 раунда «Торговля» и «Продажа», которые следуют друг за другом, начиная с раунда продажи.
-Каждый раунд длится 3 дня.
+### Description of the ACDMPlatform
+There are 2 rounds, "Trading" and "Selling," which follow each other, starting with the selling round.
 
-#### Основные понятия:
-Раунд «Sale» - В данном раунде пользователь может купить токены ACDM по фиксируемой цене у платформы за ETH.
-Раунд «Trade» - в данном раунде пользователи могут выкупать друг у друга токены ACDM за ETH.
-Реферальная программа — реферальная программа имеет два уровня, пользователи получают реварды в ETH.
+Each round lasts three days.
 
-#### Описание раунда «Sale»:
-Цена токена с каждым раундом растет и рассчитывается по формуле (смотри excel файл). Количество выпущенных токенов в каждом Sale раунде разное и зависит от общего объема торгов в раунде «Trade». Раунд может закончиться досрочно если все токены были распроданы. По окончанию раунда не распроданные токены сжигаются. Самый первый раунд продает токенны на сумму 1ETH (100 000 ACDM)
-Пример расчета:
-Объем торгов в trade раунде = 0,5 ETH (общая сумма ETH на которую пользователи наторговали в рамках одного trade раунд)
-0,5/0,0000187 = 26737.96. (0,0000187 = цена токена в текущем раунде)
-следовательно в Sale раунде будет доступно к продаже 26737.96 токенов ACDM.
+#### Basic concepts:
+Sale round - In this round, the user can buy ACDM tokens at a fixed price from the platform for ETH.
+Round "Trade" - in this round, users can redeem ACDM tokens from each other for ETH.
+Referral program - the referral program has two levels, users receive revards in ETH.
 
-#### Описание раунда «Trade»:
-user_1 выставляет ордер на продажу ACDM токенов за определенную сумму в ETH. User_2 выкупает токены за ETH. Ордер может быть выкуплен не полностью. Также ордер можно отозвать и пользователю вернутся его токены, которые еще не были проданы. Полученные ETH сразу отправляются пользователю в их кошелек metamask. По окончанию раунда все открытые ордера переходят в следующий TRADE раунд..
+#### Sale Round Description:
+The price of a token grows with each round and is calculated by the formula (see excel file). The number of issued tokens in each Sale round is different and depends on the total volume of trades in the Trade round. The round can end early if all the tokens have been sold out. At the end of the round the unsold tokens are burned. The very first round sells tokens worth 1ETH (100,000 ACDM)
 
-#### Описание Реферальной программы:
-При регистрации пользователь указывает своего реферера (Реферер должен быть уже зарегистрирован на платформе).
-При покупке в Sale раунде токенов ACDM, рефереру_1 отправится 5%(этот параметр регулируется через DAO) от его покупки, рефереру_2 отправится 3%(этот параметр регулируется через DAO), сама платформа получит 92%, в случае отсутствия рефереров всё получает платформа.
+#### Example calculation:
+Trading volume in a trade round = 0.5 ETH (the total amount of ETH that users traded in one trade round)
 
-При покупке в Trade раунде пользователь, который выставил ордер на продажу ACDM токенов получит 95% ETH и по 2,5%(этот параметр регулируется через DAO) получат рефереры, в случае их отсутствия платформа забирает эти проценты себе на специальный счет, к которому доступ есть только через DAO голосование. 
+0,5/0,0000187 = 26737.96. (0.0000187 = price of token in current round)
+
+Therefore, in the Sale round will be available for sale 26737.96 tokens ACDM.
+
+#### Description of the Trade Round:
+user_1 places an order to sell ACDM tokens for a certain amount of ETH. User_2 redeems the tokens for ETH. The order may not be redeemed in full. The order can also be canceled and the user will receive back his tokens which have not yet been sold. ETH received are immediately sent to the user in their metamask wallet. At the end of the round, all open orders go to the next TRADE round.
+
+#### Referral Program Description:
+When registering, the user indicates his referrer (Referrer must already be registered on the platform).
+
+When you buy ACDM tokens in the Sale round, referrer_1 will be sent 5% (this parameter is regulated by DAO) of his purchase, referrer_2 will be sent 3% (this parameter is regulated by DAO), the platform itself will get 92%, in the absence of referrers all get platform.
+
+When buying in Trade round user who put an order to sell ACDM tokens will receive 95% of ETH and 2.5% (this parameter is regulated through DAO) will receive referrers, in their absence, the platform takes these percentages to a special account, which can only be accessed through DAO voting. 
 
 Price ETH = lastPrice*1,03+0,000004
 
-Пример расчета: 0,0000100*1,03+0,000004 = 0,0000143
+Example calculation: 0.0000100*1.03+0.000004 = 0.0000143
 
 #### Sale Rounds:
 
@@ -60,16 +66,10 @@ Price ETH = lastPrice*1,03+0,000004
 * 6 = 0,0000328 ETH
 
 
-#### Через ДАО голосование пользователи будут решать отдать эту комиссию овнеру или на эти ETH купить XXXToken на uniswap-е а после их сжечь.
-* Написать все смарт контракты
-* Написать полноценные тесты ко всей системе 
-* Написать скрипты деплоя
-* Задеплоить в тестовую сеть
-* Написать таски на на основные методы
-* Верифицировать контракты
-
-#### Ссылки: 
-* [Схема](https://app.diagrams.net/#G1gj3yihfvJl1WXPJtegO4N5j6q-Rd9ZMn)
-* [Уязвимости в безопасности](https://russianblogs.com/article/857220099/)
-* [ReentrancyGuard](https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard) 
-* [Uniswap](https://docs.uniswap.org/protocol/V2/introduction )
+#### Through the FAO voting, users will decide to give this commission to the ovner or use it to buy XXXToken on uniswap and then burn them.
+* Write all the smart contracts
+* Write full-fledged tests for the whole system 
+* Write Deployment scripts
+* Deploy into the test network
+* Write a tasking on the main methods
+* To verify the contracts
