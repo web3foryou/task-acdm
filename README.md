@@ -2,18 +2,14 @@
 Платформа будет состоять из нескольких контрактов (ACDMToken, XXXToken, Staking, DAO, ACDMPlatform).
 
 #### Описание ACDMToken
-name = ACADEM Coin
-
-symbol = ACDM
-
-decimals = 6
+* name = ACADEM Coin
+* symbol = ACDM
+* decimals = 6
 
 #### Описание XXXToken
-name = XXX Coin
-
-symbol = XXX
-
-decimals = 18
+* name = XXX Coin
+* symbol = XXX
+* decimals = 18
 
 XXXToken необходимо залистить на uniswap. Первоначальная цена токена 0,00001 ETH.
 
@@ -56,37 +52,24 @@ Price ETH = lastPrice*1,03+0,000004
 
 #### Sale Rounds:
 
-1 = 0,0000100 ETH
-
-2 = 0,0000143 ETH
-
-3 = 0,0000187 ETH
-
-4 = 0,0000233 ETH
-
-5 = 0,0000280 ETH
-
-6 = 0,0000328 ETH
+* 1 = 0,0000100 ETH
+* 2 = 0,0000143 ETH
+* 3 = 0,0000187 ETH
+* 4 = 0,0000233 ETH
+* 5 = 0,0000280 ETH
+* 6 = 0,0000328 ETH
 
 
 #### Через ДАО голосование пользователи будут решать отдать эту комиссию овнеру или на эти ETH купить XXXToken на uniswap-е а после их сжечь.
-Написать все смарт контракты
-
-Написать полноценные тесты ко всей системе 
-
-Написать скрипты деплоя
-
-Задеплоить в тестовую сеть
-
-Написать таски на на основные методы
-
-Верифицировать контракты
+* Написать все смарт контракты
+* Написать полноценные тесты ко всей системе 
+* Написать скрипты деплоя
+* Задеплоить в тестовую сеть
+* Написать таски на на основные методы
+* Верифицировать контракты
 
 #### Ссылки: 
-Схема https://app.diagrams.net/#G1gj3yihfvJl1WXPJtegO4N5j6q-Rd9ZMn
-
-Уязвимости в безопасности  https://russianblogs.com/article/857220099/
-
-ReentrancyGuard https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard 
-
-uniswap https://docs.uniswap.org/protocol/V2/introduction 
+* Схема https://app.diagrams.net/#G1gj3yihfvJl1WXPJtegO4N5j6q-Rd9ZMn
+* Уязвимости в безопасности  https://russianblogs.com/article/857220099/
+* ReentrancyGuard https://docs.openzeppelin.com/contracts/4.x/api/security#ReentrancyGuard 
+* uniswap https://docs.uniswap.org/protocol/V2/introduction 
